@@ -1,4 +1,4 @@
-
+<script>
 // psuedo code: marvel universe theme
 
 // variables
@@ -27,12 +27,11 @@ var $wordDisplay = document.getElementById("display");
 var $comment = document.getElementById("comment");
 
 
-// procedure:
-
 // computer picks a word, displays _ _ _ _ on screen
     var currentWord = mahvel[Math.floor(Math.random()*mahvel.length)];
-    var wordDisplayMaker = function(x) {
+    var wordDisplayMaker = function() {
         for (var i=0; i<currentWord.length; i++) {
+            if (currentWord.charAt(i) )
             wordDisplay.push("_ ");
         }
     }
@@ -40,9 +39,9 @@ var $comment = document.getElementById("comment");
     $wordDisplay.textContent = wordDisplay;
 
 // creating the win condition: if some point all letters in currentWord are guessed, display "you win!""
-    
 
-// creating the lose condition: if some point triesLeft === 0, display "you lose"
+
+
     
 
 // person picks a letter onkeyup
@@ -64,9 +63,10 @@ var $comment = document.getElementById("comment");
             }
             //failure: counts down attempts left and checks for loss condition
             else {
-                triesLeft = triesLeft -1
+                triesLeft = triesLeft -1;
+                // creating the lose condition: if some point triesLeft === 0, display "you lose"
                 if (triesLeft === 0) {
-                    $comment.textContent = "You should have aimed for the head";
+                    $comment.textContent = "You lose noob";
                 }
             }
         }
@@ -81,4 +81,4 @@ var $comment = document.getElementById("comment");
 // if no blank spaces remaining, display you win 
 // if no guesses remaining, display you lose 
 // reset everything except wins 
-            
+</script>

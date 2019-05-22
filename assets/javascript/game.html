@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<h1>Wins: <span id="wins">0</span></h1>
+<h1 id="display"></h1>
+<h1 id="comment"></h1>
+<h1 id="input"></h1>
+<h1 id="guessDisplay"></h1>
+<h1>Tries left: <span id="triesLeft">15<span></h1>
+
+<script>
+// pseudo code: marvel universe theme
+
+// variables
+// var for wins
+var wins = 0;
+// var for array of marvel words 
+var mahvel2 = ["cryostasis", "cyborg", "dendrotoxin", "gravitonium", "hadron", "neodynium", "palladium", "singularity", "spoiler", "vibranium", "thanos", "danvers", "bucky", "groot", "valkyrie"];
+// var for testing
+var mahvel = ["dog", "cat", "test"];
+// var array of letters already picked
+var guesses = [];
+// var for counting amount of tries left 
+var triesLeft = 15;
+// var for target word
+var targetWord;
+// var for user guess
+var userGuess;
+// var for word displayed
+var wordDisplay = [];
+// var for guess log
+var guessLog = [];
+var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+var $wins = document.getElementById("wins");
+var $wordDisplay = document.getElementById("display");
+var $comment = document.getElementById("comment");
+var $input = document.getElementById("input");
+var $guessDisplay = document.getElementById("guessDisplay");
+var $triesLeft = document.getElementById("triesLeft")
+
+//computer checks that it is a letter 
+var isLetter = function(c) {
+    return c.length === 1 && (c.toLowerCase() != c.toUpperCase()); 
+}
+//checks tries left
+var checkGameEnd = function() {
+    if (triesLeft === 0) {
+        $comment.textContent = "You lose!";
+    }
+    else if (wordDisplay.indexOf("_ ") === -1) {
+        $comment.textContent = "You win!";
+        wins++;
+    }
+}
+var displayGuesses = function() {
+    for (var i = 0; i < alphabet.length; i++) {
+        $guessDisplay.textContent = guesses;
+    }
+}
+//update all text function
+var updateText = function() {
+    wordDisplayMaker();
+    displayGuesses();
+    $triesLeft.textContent = triesLeft;
+    $wins.textContent = wins;
+}
+var guessIsCorrect = function(c) {
+    if (targetWord.indexOf(c) > -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// computer picks a word, displays _ _ _ _ on screen
+var targetWord = mahvel[Math.floor(Math.random()*mahvel.length)];
+var wordDisplayMaker = function() {
+    wordDisplay = [];
+    for (var i = 0; i<targetWord.length; i++) {
+        var targetCharacter = targetWord.charAt(i);
+        if (guesses.indexOf(targetCharacter) > -1) {
+            wordDisplay.push(targetCharacter);
+        }
+        else {
+            wordDisplay.push("_ ");
+        }
+    }
+    $wordDisplay.textContent = wordDisplay;
+}
+// prints out display of how many letters in the target word
+
+updateText();
+
+document.onkeyup = function(event) {
+    var userGuess = event.key;
+    if (isLetter(userGuess)) {
+        $input.textContent = userGuess;
+        // if not guessed before 
+        if (guesses.indexOf(userGuess) < 0) {
+            // add their guess to list of guesses
+            guesses.push(userGuess);
+            // decrease tries left by 1
+            if (!guessIsCorrect(userGuess)) {
+                triesLeft--;
+            }
+            updateText();
+            checkGameEnd();
+        }
+        updateText();
+    }
+}
+
+
+
+
+</script>
+
+
+</body>
+</html>
