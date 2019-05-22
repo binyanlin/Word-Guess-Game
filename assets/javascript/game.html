@@ -24,7 +24,7 @@ var wins = 0;
 // var for array of marvel words 
 var mahvel2 = ["cryostasis", "cyborg", "dendrotoxin", "gravitonium", "hadron", "neodynium", "palladium", "singularity", "spoiler", "vibranium", "thanos", "danvers", "bucky", "groot", "valkyrie"];
 // var for testing
-var mahvel = ["dog", "cat", "test"];
+var mahvel = ["bear", "cat", "squid"];
 // var array of letters already picked
 var guesses = [];
 // var for counting amount of tries left 
@@ -50,16 +50,35 @@ var $triesLeft = document.getElementById("triesLeft")
 var isLetter = function(c) {
     return c.length === 1 && (c.toLowerCase() != c.toUpperCase()); 
 }
-//checks tries left
+//function for resetting the game to the start 
+var gameLoop = function() {
+    targetWord;
+    guessLog = [];
+    guesses = [];
+    triesLeft = 15;
+    $guessDisplay.textContent = "";
+}
+//checks tries left and game ending conditions
 var checkGameEnd = function() {
     if (triesLeft === 0) {
         $comment.textContent = "You lose!";
+        if (confirm("Press ok to try again")) {
+            gameLoop();
+        } else {
+            // what to do if they cancel?
+        }
     }
     else if (wordDisplay.indexOf("_ ") === -1) {
         $comment.textContent = "You win!";
         wins++;
+        if (confirm("Press ok to try again")) {
+            gameLoop();
+        } else {
+            // what to do if they cancel?
+        }
     }
 }
+//displays all the previous guesses, non repeating
 var displayGuesses = function() {
     for (var i = 0; i < alphabet.length; i++) {
         $guessDisplay.textContent = guesses;
@@ -72,6 +91,7 @@ var updateText = function() {
     $triesLeft.textContent = triesLeft;
     $wins.textContent = wins;
 }
+//function for checking if the guess is part of the currently selected word
 var guessIsCorrect = function(c) {
     if (targetWord.indexOf(c) > -1) {
         return true;
@@ -80,7 +100,7 @@ var guessIsCorrect = function(c) {
         return false;
     }
 }
-
+// game start conditions: maybe a press any button option?
 // computer picks a word, displays _ _ _ _ on screen
 var targetWord = mahvel[Math.floor(Math.random()*mahvel.length)];
 var wordDisplayMaker = function() {
@@ -100,8 +120,10 @@ var wordDisplayMaker = function() {
 
 updateText();
 
+// event that happens when a key is pressed
 document.onkeyup = function(event) {
     var userGuess = event.key;
+    //if the guess is a letter
     if (isLetter(userGuess)) {
         $input.textContent = userGuess;
         // if not guessed before 
@@ -118,6 +140,7 @@ document.onkeyup = function(event) {
         updateText();
     }
 }
+
 
 
 
