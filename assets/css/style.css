@@ -1,0 +1,15 @@
+
+#mcub {
+    background-image: url("./../images/bg3.jpg");
+    height:auto; 
+    background-position: center;
+    background-size: cover;
+}
+
+.jumbotron {
+    background: none;
+}
+
+.header {
+    font-family: 'Open Sans', sans-serif;
+}

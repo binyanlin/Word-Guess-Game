@@ -5,15 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./../css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<h1>Wins: <span id="wins">0</span></h1>
-<h1 id="display"></h1>
-<h1 id="comment"></h1>
-<h1 id="input"></h1>
-<h1 id="guessDisplay"></h1>
-<h1>Tries left: <span id="triesLeft">15<span></h1>
+    <div class="container-fluid text-light" Id="mcub">
+
+    <header>
+        <h1 class="display-3 text-center my-4 py-4 bg-danger header">MARVEL Hangman</h1>
+    </header>
+
+    <br>
+        <div class="container mt-2 main">
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3">
+                    <h1>Wins: <span id="wins">0</span></h1>
+                </div>
+                <div class="col-sm-3">
+                    <h1>Tries left: <span id="triesLeft">15<span></h1>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+
+            <br>
+
+            <div class="row ">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <h1 class="display-1 my-4" id="display"></h1>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            
+            <div class="row">
+                <h1 id="comment"></h1>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-2">
+                    <h1 id="input"></h1>
+                </div>
+                <div class="col-sm-10">
+                    <h1 id="guessDisplay"></h1>
+                </div>
+            </div>
+                
+        </div>
+    </div>
 
 <script>
 // pseudo code: marvel universe theme
@@ -24,7 +65,7 @@ var wins = 0;
 // var for array of marvel words 
 var mahvel2 = ["cryostasis", "cyborg", "dendrotoxin", "gravitonium", "hadron", "neodynium", "palladium", "singularity", "spoiler", "vibranium", "thanos", "danvers", "bucky", "groot", "valkyrie"];
 // var for testing
-var mahvel = ["bear", "cat", "squid"];
+var mahvel = ["bear", "cat", "squid", "donkey"];
 // var array of letters already picked
 var guesses = [];
 // var for counting amount of tries left 
@@ -52,31 +93,29 @@ var isLetter = function(c) {
 }
 //function for resetting the game to the start 
 var gameLoop = function() {
-    targetWord;
+    targetWord = mahvel[Math.floor(Math.random()*mahvel.length)]
     guessLog = [];
     guesses = [];
     triesLeft = 15;
     $guessDisplay.textContent = "";
+    updateText();
 }
 //checks tries left and game ending conditions
 var checkGameEnd = function() {
     if (triesLeft === 0) {
-        $comment.textContent = "You lose!";
-        if (confirm("Press ok to try again")) {
-            gameLoop();
-        } else {
-            // what to do if they cancel?
-        }
+        $comment.textContent = "You lose! Press any letter to try again.";
+        updateText();
+        // Make a button to display on win or lose that runs gameLoop();
+        // gameLoop();
     }
     else if (wordDisplay.indexOf("_ ") === -1) {
-        $comment.textContent = "You win!";
+        $comment.textContent = "You win! Press any letter to try again.";
         wins++;
-        if (confirm("Press ok to try again")) {
-            gameLoop();
-        } else {
-            // what to do if they cancel?
-        }
+        updateText();
+        // gameLoop();
+        
     }
+
 }
 //displays all the previous guesses, non repeating
 var displayGuesses = function() {
@@ -133,12 +172,13 @@ document.onkeyup = function(event) {
             // decrease tries left by 1
             if (!guessIsCorrect(userGuess)) {
                 triesLeft--;
+                updateText();
             }
             updateText();
-            checkGameEnd();
         }
         updateText();
     }
+    checkGameEnd();
 }
 
 
