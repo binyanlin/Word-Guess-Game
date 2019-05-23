@@ -47,6 +47,10 @@ html {
 
 }
 
+#comment{
+    position: relative;
+    bottom: 50px;
+}
 
 .footer {
     position: absolute;

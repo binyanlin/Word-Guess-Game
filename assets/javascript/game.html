@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Hangman</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- <link rel="stylesheet" type="text/css" href="./../css/reset.css"/> -->
     <link rel="stylesheet" type="text/css" href="./../css/style.css">
@@ -76,7 +76,7 @@
 var wins = 0;
 // var for array of marvel words 
 var mahvel = ["cryostasis", "cyborg", "dendrotoxin", "gravitonium", "hadron", "neodynium", "palladium", "singularity", "spoiler", "vibranium", "thanos", "danvers", "bucky", "groot", "valkyrie"];
-// var for testing
+// var for testing, switch the two names for debugging
 var mahvel2 = ["bear", "cat", "squid", "donkey"];
 // var array of letters already picked
 var guesses = [];
@@ -110,24 +110,26 @@ var gameLoop = function() {
     guesses = [];
     triesLeft = 15;
     $guessDisplay.textContent = "";
+    $comment.textContent = "";
     updateText();
 }
-//checks tries left and game ending conditions
+// checks tries left and game ending conditions
 var checkGameEnd = function() {
     if (triesLeft === 0) {
         $comment.textContent = "You lose! Press any letter to try again.";
         updateText();
-        // Make a button to display on win or lose that runs gameLoop();
-        // gameLoop();
+        document.onkeyup = function(event) {
+            gameLoop();
+        }
     }
     else if (wordDisplay.indexOf("_ ") === -1) {
         $comment.textContent = "You win! Press any letter to try again.";
         wins++;
         updateText();
-        // gameLoop();
-        
+        document.onkeyup = function(event) {
+            gameLoop();
+        }
     }
-
 }
 //displays all the previous guesses, non repeating
 var displayGuesses = function() {
@@ -165,7 +167,7 @@ var wordDisplayMaker = function() {
             wordDisplay.push("_ ");
         }
     }
-    $wordDisplay.textContent = wordDisplay;
+    $wordDisplay.textContent = wordDisplay.join(" ");
 }
 // prints out display of how many letters in the target word
 
