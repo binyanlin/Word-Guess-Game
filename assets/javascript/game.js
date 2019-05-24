@@ -1,82 +1,11 @@
-<!DOCTYPE html>
-<!-- saved from url=(0072)file:///Users/Binyan/Desktop/word_guess_game/assets/javascript/game.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="./Document_files/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" type="text/css" href="./../css/reset.css"/> -->
-    <link rel="stylesheet" type="text/css" href="file:///Users/Binyan/Desktop/word_guess_game/assets/css/style.css">
-    <link href="./Document_files/css" rel="stylesheet">
-</head>
-<body id="mcub">
-    
-    <div class="main" id="body2">
 
-        <div class="row">
-            <header class="header">
-                <h1 class="display-3 text-center text-light py-3 bg-danger">MARVEL Hangman</h1>
-            </header>
-        </div>
-        
-        <div class="container">
-
-            <div>
-                <div class="row">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-3">
-                        <h1>Wins: <span id="wins">0</span></h1>
-                    </div>
-                    <div class="col-sm-4">
-                        <h1>Tries left: <span id="triesLeft">15</span></h1>
-                    </div>
-                    <div class="col-sm-2"></div>
-                </div>
-
-                <br><br>
-
-                <div class="row">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-10">
-                        <h1 class="display-4 my-4 text-center" id="display">_ ,_ ,_ ,_ ,_ ,_ </h1>
-                    </div>
-                    <div class="col-sm-1"></div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h1 class="text-center" id="comment"></h1>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm-2">
-                        <h3 id="gd">Letters Used: <p id="guessDisplay"></p></h3>
-                    </div>
-                    <div class="col-sm-8"></div>
-                    <div class="col-sm-2">
-                        <h3 class="text-center" id="input2">Current Input:<p id="input"></p></h3>
-                    </div>
-                    
-                </div>
-                    
-            </div>
-
-        </div>
-    </div>
-
-    <div class="footer bg-danger"></div>
-
-<script>
-// pseudo code: marvel universe theme
 
 // variables
 // var for wins
 var wins = 0;
 // var for array of marvel words 
 var mahvel = ["cryostasis", "cyborg", "dendrotoxin", "gravitonium", "hadron", "neodynium", "palladium", "singularity", "spoiler", "vibranium", "thanos", "danvers", "bucky", "groot", "valkyrie"];
-// var for testing
+// var for testing, switch the two names for debugging
 var mahvel2 = ["bear", "cat", "squid", "donkey"];
 // var array of letters already picked
 var guesses = [];
@@ -110,24 +39,47 @@ var gameLoop = function() {
     guesses = [];
     triesLeft = 15;
     $guessDisplay.textContent = "";
+    $comment.textContent = "";
     updateText();
+    // Need a way to reassign the onkeyup function after game end so it doesn't keep looping in gameLoop
+    document.onkeyup = function(event) {
+    var userGuess = event.key;
+    //if the guess is a letter
+    if (isLetter(userGuess)) {
+        $input.textContent = userGuess;
+        // if not guessed before 
+        if (guesses.indexOf(userGuess) < 0) {
+            // add their guess to list of guesses
+            guesses.push(userGuess);
+            // decrease tries left by 1
+            if (!guessIsCorrect(userGuess)) {
+                triesLeft--;
+                updateText();
+            }
+            updateText();
+        }
+        updateText();
+    }
+    checkGameEnd();
+    }
 }
-//checks tries left and game ending conditions
+// checks tries left and game ending conditions
 var checkGameEnd = function() {
     if (triesLeft === 0) {
         $comment.textContent = "You lose! Press any letter to try again.";
         updateText();
-        // Make a button to display on win or lose that runs gameLoop();
-        // gameLoop();
+        document.onkeyup = function(event) {
+            gameLoop();
+        }
     }
     else if (wordDisplay.indexOf("_ ") === -1) {
         $comment.textContent = "You win! Press any letter to try again.";
         wins++;
         updateText();
-        // gameLoop();
-        
+        document.onkeyup = function(event) {
+            gameLoop();
+        }
     }
-
 }
 //displays all the previous guesses, non repeating
 var displayGuesses = function() {
@@ -165,7 +117,7 @@ var wordDisplayMaker = function() {
             wordDisplay.push("_ ");
         }
     }
-    $wordDisplay.textContent = wordDisplay;
+    $wordDisplay.textContent = wordDisplay.join(" ");
 }
 // prints out display of how many letters in the target word
 
@@ -192,13 +144,3 @@ document.onkeyup = function(event) {
     }
     checkGameEnd();
 }
-
-
-
-
-
-</script>
-
-
-
-</body></html>
