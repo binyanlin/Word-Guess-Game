@@ -112,6 +112,27 @@ var gameLoop = function() {
     $guessDisplay.textContent = "";
     $comment.textContent = "";
     updateText();
+    // Need a way to reassign the onkeyup function after game end so it doesn't keep looping in gameLoop
+    document.onkeyup = function(event) {
+    var userGuess = event.key;
+    //if the guess is a letter
+    if (isLetter(userGuess)) {
+        $input.textContent = userGuess;
+        // if not guessed before 
+        if (guesses.indexOf(userGuess) < 0) {
+            // add their guess to list of guesses
+            guesses.push(userGuess);
+            // decrease tries left by 1
+            if (!guessIsCorrect(userGuess)) {
+                triesLeft--;
+                updateText();
+            }
+            updateText();
+        }
+        updateText();
+    }
+    checkGameEnd();
+    }
 }
 // checks tries left and game ending conditions
 var checkGameEnd = function() {
@@ -194,7 +215,6 @@ document.onkeyup = function(event) {
     }
     checkGameEnd();
 }
-
 
 
 

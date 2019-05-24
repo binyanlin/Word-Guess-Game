@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Psychic Game</title>
+</head>
+<body>
+
+    <script>
+    const letterBase = ["a", "b", "c"];
+        
+    let currentLetter = letterBase[Math.floor(Math.random()*letterBase.length)];
+
+    document.onkeyup = function(event) {
+        let userChoice = event.key
+        
+        if (userChoice === currentLetter) {
+            wins = wins + 1;
+            $wins.textContent = wins;
+        } else {
+            
+        }
+    }
+
+    </script>
+
+</body>
+</html>
